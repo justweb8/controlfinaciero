@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-  <!-- PWA -->
+  <!-- PWA META -->
   <meta name="application-name" content="Control Financiero">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <!-- END PWA -->
+  <!-- END PWA META -->
   <!-- PWA -->
   <meta name="application-name" content="Control Financiero">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -3312,105 +3312,7 @@ function exportarPDF() {
   <h2>Historial de Operaciones</h2>
   <table><thead><tr><th>Fecha</th><th>Descripción</th><th>Tipo</th><th>Socio</th><th style="text-align:right">Monto</th></tr></thead><tbody>${filas}</tbody></table>
   <p class="footer">Constructora MVP • Control Financiero de Socios</p>
-  
-<!-- PWA INSTALL BANNER -->
-<div id="pwa-install-wrap" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9990;
-  background:linear-gradient(135deg,#1a2a4a,#2563EB);border-radius:16px;padding:14px 20px;
-  box-shadow:0 8px 32px rgba(0,0,0,.3);align-items:center;gap:14px;max-width:340px;width:calc(100% - 32px);">
-  <div style="font-size:28px;flex-shrink:0;">📲</div>
-  <div style="flex:1;">
-    <p style="font-size:13px;font-weight:800;color:#fff;margin-bottom:2px;">Instalar app</p>
-    <p style="font-size:11px;color:rgba(255,255,255,.65);">Accede sin internet desde tu pantalla de inicio</p>
-  </div>
-  <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
-    <button id="pwa-install-btn" style="padding:8px 16px;background:linear-gradient(135deg,#d4af37,#f0c830);border:none;border-radius:10px;
-      color:#1a2a0a;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;">
-      Instalar
-    </button>
-    <button onclick="document.getElementById('pwa-install-wrap').style.display='none'" style="padding:6px;background:rgba(255,255,255,.1);
-      border:none;border-radius:8px;color:rgba(255,255,255,.7);font-size:11px;cursor:pointer;font-family:inherit;">
-      Ahora no
-    </button>
-  </div>
-</div>
-<!-- END PWA INSTALL BANNER -->
-
-</body>
-<script>
-// ============================================================
-// PWA Service Worker (inline blob)
-// ============================================================
-if ('serviceWorker' in navigator) {
-  const swCode = [
-    "const CACHE='constructora-v1';",
-    "self.addEventListener('install',e=>{",
-    "  e.waitUntil(caches.open(CACHE).then(c=>c.add(self.location.href)).then(()=>self.skipWaiting()));",
-    "});",
-    "self.addEventListener('activate',e=>{",
-    "  e.waitUntil(clients.claim());",
-    "});",
-    "self.addEventListener('fetch',e=>{",
-    "  e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));",
-    "});"
-  ].join('\n');
-  const blob = new Blob([swCode], {type:'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(blob))
-    .then(r=>console.log('PWA SW ok'))
-    .catch(e=>console.warn('SW:',e));
-}
-
-// Install prompt
-let _pwaPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  _pwaPrompt = e;
-  const w = document.getElementById('pwa-install-wrap');
-  if (w) w.style.display = 'flex';
-});
-document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
-  if (!_pwaPrompt) return;
-  _pwaPrompt.prompt();
-  const {outcome} = await _pwaPrompt.userChoice;
-  _pwaPrompt = null;
-  const w = document.getElementById('pwa-install-wrap');
-  if (w) w.style.display = 'none';
-  if (outcome === 'accepted') toast('App instalada ✓');
-});
-window.addEventListener('appinstalled', () => {
-  const w = document.getElementById('pwa-install-wrap');
-  if (w) w.style.display = 'none';
-  toast('App instalada correctamente ✓');
-});
-</script>
-
-<script>
-// Manifest PWA embebido
-(function() {
-  const manifest = {
-    name: 'Control Financiero',
-    short_name: 'Ctrl Fin',
-    description: 'Sistema de control financiero para constructora',
-    start_url: '.',
-    display: 'standalone',
-    orientation: 'portrait-primary',
-    background_color: '#1a2a4a',
-    theme_color: '#1a2a4a',
-    icons: [
-      { src: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWEyYTRhIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzI1NjNFQiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMDAiIGZpbGw9InVybCgjZzEpIi8+CiAgPHJlY3QgeD0iNDAiIHk9IjQwIiB3aWR0aD0iNDMyIiBoZWlnaHQ9IjQzMiIgcng9IjcwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wOCkiIHN0cm9rZS13aWR0aD0iMyIvPgogIDx0ZXh0IHg9IjI1NiIgeT0iMjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMTMwIiBmaWxsPSIjZDRhZjM3Ij5DRjwvdGV4dD4KICA8dGV4dCB4PSIyNTYiIHk9IjMxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iNzAwIiBmb250LXNpemU9IjUyIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuODUpIiBsZXR0ZXItc3BhY2luZz0iNCI+Q09OVFJPTDwvdGV4dD4KICA8dGV4dCB4PSIyNTYiIHk9IjM3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iNzAwIiBmb250LXNpemU9IjQwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNikiIGxldHRlci1zcGFjaW5nPSI2Ij5GSU5BTkNJRVJPPC90ZXh0PgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjQ0MCIgcj0iMTIiIGZpbGw9IiNkNGFmMzciIG9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4=', sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
-      { src: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZzEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWEyYTRhIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzI1NjNFQiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMDAiIGZpbGw9InVybCgjZzEpIi8+CiAgPHJlY3QgeD0iNDAiIHk9IjQwIiB3aWR0aD0iNDMyIiBoZWlnaHQ9IjQzMiIgcng9IjcwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wOCkiIHN0cm9rZS13aWR0aD0iMyIvPgogIDx0ZXh0IHg9IjI1NiIgeT0iMjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMTMwIiBmaWxsPSIjZDRhZjM3Ij5DRjwvdGV4dD4KICA8dGV4dCB4PSIyNTYiIHk9IjMxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iNzAwIiBmb250LXNpemU9IjUyIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuODUpIiBsZXR0ZXItc3BhY2luZz0iNCI+Q09OVFJPTDwvdGV4dD4KICA8dGV4dCB4PSIyNTYiIHk9IjM3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iNzAwIiBmb250LXNpemU9IjQwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNikiIGxldHRlci1zcGFjaW5nPSI2Ij5GSU5BTkNJRVJPPC90ZXh0PgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjQ0MCIgcj0iMTIiIGZpbGw9IiNkNGFmMzciIG9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4=', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
-    ],
-    categories: ['finance', 'business'],
-    lang: 'es'
-  };
-  const blob = new Blob([JSON.stringify(manifest)], {type:'application/manifest+json'});
-  const url  = URL.createObjectURL(blob);
-  const link = document.createElement('link');
-  link.rel  = 'manifest';
-  link.href = url;
-  document.head.appendChild(link);
-})();
-</script>
-</html>`;
+  `;
   const w = window.open('','_blank');
   w.document.write(html);
   w.document.close();
@@ -3897,10 +3799,7 @@ document.body.style.overflow = 'hidden';
 })();
 </script>
 
-</div><!-- end #app-content -->
-
-
-<!-- PWA INSTALL BANNER -->
+<!-- PWA BANNER -->
 <div id="pwa-install-wrap" style="display:none;position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9990;background:linear-gradient(135deg,#1a2a4a,#2563EB);border-radius:16px;padding:14px 20px;box-shadow:0 8px 32px rgba(0,0,0,.35);align-items:center;gap:14px;max-width:340px;width:calc(100% - 32px);">
   <img src="icon-192.png" style="width:44px;height:44px;border-radius:10px;flex-shrink:0;" alt="">
   <div style="flex:1;">
@@ -3916,32 +3815,34 @@ document.body.style.overflow = 'hidden';
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
     navigator.serviceWorker.register("./sw.js")
-      .then(function(r){ console.log("SW registrado"); })
-      .catch(function(e){ console.warn("SW error", e); });
+      .then(function(){ console.log("SW ok"); })
+      .catch(function(e){ console.warn("SW:", e); });
   });
 }
-var _pwaPrompt = null;
+var _pwaP = null;
 window.addEventListener("beforeinstallprompt", function(e) {
-  e.preventDefault(); _pwaPrompt = e;
-  var w = document.getElementById("pwa-install-wrap");
-  if (w) w.style.display = "flex";
+  e.preventDefault(); _pwaP = e;
+  var el = document.getElementById("pwa-install-wrap");
+  if (el) el.style.display = "flex";
 });
-document.addEventListener("DOMContentLoaded", function() {
+window.addEventListener("DOMContentLoaded", function() {
   var btn = document.getElementById("pwa-install-btn");
-  if (btn) btn.addEventListener("click", function() {
-    if (!_pwaPrompt) return;
-    _pwaPrompt.prompt();
-    _pwaPrompt.userChoice.then(function(r) {
-      _pwaPrompt = null;
+  if (!btn) return;
+  btn.onclick = function() {
+    if (!_pwaP) return;
+    _pwaP.prompt();
+    _pwaP.userChoice.then(function(r) {
+      _pwaP = null;
       document.getElementById("pwa-install-wrap").style.display = "none";
-      if (r.outcome === "accepted" && typeof toast === "function") toast("App instalada");
+      if (r.outcome==="accepted" && typeof toast==="function") toast("App instalada");
     });
-  });
+  };
 });
 window.addEventListener("appinstalled", function() {
-  var w = document.getElementById("pwa-install-wrap");
-  if (w) w.style.display = "none";
+  var el = document.getElementById("pwa-install-wrap");
+  if (el) el.style.display = "none";
 });
 </script>
+</div><!-- end #app-content -->
 </body>
 </html>

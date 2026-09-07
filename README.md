@@ -284,5 +284,6 @@ Una vez instalada, la app funciona sin internet gracias al Service Worker (`sw.j
 
 ## 📞 SOPORTE
 
+Sistema desarrollado con Claude (Anthropic).
 Base de datos: Supabase (afhnepfgvutfcozsbqct)
 
